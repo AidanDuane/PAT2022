@@ -6,6 +6,9 @@ package UI;
 
 import static UI.TestTable.getColNames;
 import static UI.TestTable.getData;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -134,7 +137,11 @@ public class History extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        new Dashboard().setVisible(true);
+        try {
+            new Dashboard().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(History.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**

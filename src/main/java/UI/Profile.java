@@ -23,23 +23,47 @@ public class Profile extends javax.swing.JFrame {
 
     //create the combobox model
     //create the usernames array
-    DefaultComboBoxModel model = new DefaultComboBoxModel();
-    String[] usernames;
-
     /**
      * Creates new form Profile
      */
+    private String username;
+
     public Profile() {
         initComponents();
 
         //populate the usernames array with the usernames fetched by the getUsernames method
-        usernames = UserManager.getUsernames();
-        for (int i = 0; i < usernames.length; i++) {
+    }
 
-            model.addElement(usernames[i]);
+    public Profile(boolean currentAccount, String username) {
+        initComponents();
 
+        if (currentAccount) {
+
+            this.username = username;
+
+            setupCurrentUser();
         }
-        this.profileCombo.setModel(model);
+
+        //populate the usernames array with the usernames fetched by the getUsernames method
+    }
+
+    private void setupCurrentUser() {
+
+        //populates all the information fields and spinners appropriately according to the selected user
+        String[] result = UserManager.getInfo(username);
+        String value = (result[4]);
+        System.out.println(value);
+        ageSpinner.setValue(Integer.parseInt(result[UserManager.AGE]));
+        weightSpinner.setValue(Double.parseDouble(result[UserManager.WEIGHT]));
+        heightSpinner.setValue(Double.parseDouble(result[UserManager.HEIGHT]));
+        nameField.setText(username);
+        goalSpinner.setValue(Double.parseDouble(result[UserManager.GOAL]));
+        //opulates the radio button correctly
+        if (result[2].equals("M")) {
+            maleRadioButton.setSelected(true);
+        } else {
+            femaleRadioButton.setSelected(true);
+        }
     }
 
     /**
@@ -60,7 +84,6 @@ public class Profile extends javax.swing.JFrame {
         weightLabel = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        profileCombo = new javax.swing.JComboBox<>();
         saveButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
@@ -96,18 +119,6 @@ public class Profile extends javax.swing.JFrame {
         nameLabel.setText("Name");
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-
-        profileCombo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Profile", "", "", "" }));
-        profileCombo.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                profileComboItemStateChanged(evt);
-            }
-        });
-        profileCombo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                profileComboActionPerformed(evt);
-            }
-        });
 
         saveButton.setText("SAVE");
         saveButton.addActionListener(new java.awt.event.ActionListener() {
@@ -175,7 +186,10 @@ public class Profile extends javax.swing.JFrame {
                             .addComponent(goalLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(saveButton)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(saveButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(addProfileButton))
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(goalSpinner, javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,15 +223,9 @@ public class Profile extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(ageLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(profileCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(addProfileButton))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(ageSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(jLabel10)))))
+                                .addComponent(ageSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel10)))
                         .addGap(437, 437, 437))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(9, 9, 9)
@@ -233,11 +241,7 @@ public class Profile extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(backButton)
-                .addGap(62, 62, 62)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(profileCombo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(addProfileButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(96, 96, 96)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ageLabel)
                     .addComponent(jLabel10)
@@ -270,7 +274,9 @@ public class Profile extends javax.swing.JFrame {
                             .addComponent(goalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(nameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(saveButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(saveButton)
+                    .addComponent(addProfileButton))
                 .addGap(68, 68, 68))
             .addGroup(layout.createSequentialGroup()
                 .addGap(259, 259, 259)
@@ -283,10 +289,6 @@ public class Profile extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void profileComboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileComboActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_profileComboActionPerformed
-
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         // TODO add your handling code here:
 
@@ -295,7 +297,11 @@ public class Profile extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        new Dashboard().setVisible(true);
+        try {
+            new Dashboard().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(Profile.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void nameFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameFieldActionPerformed
@@ -303,26 +309,6 @@ public class Profile extends javax.swing.JFrame {
         String name = (String) nameField.getSelectedText();
     }//GEN-LAST:event_nameFieldActionPerformed
 
-    private void profileComboItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_profileComboItemStateChanged
-        // TODO add your handling code here:
-        //makes the username variable into the selcted username from the combobox
-        String username = (String) profileCombo.getSelectedItem();
-        //populates all the information fields and spinners appropriately according to the selected user
-        String[] result = UserManager.getInfo(username);
-
-        ageSpinner.setValue(Double.valueOf(result[4]));
-        weightSpinner.setValue(Double.valueOf(result[0]));
-        heightSpinner.setValue(Double.valueOf(result[1]));
-        nameField.setText(username);
-        goalSpinner.setValue(Double.valueOf(result[3]));
-        //opulates the radio button correctly
-        if (result[2].equals("M")) {
-            maleRadioButton.setSelected(true);
-        } else {
-            femaleRadioButton.setSelected(true);
-        }
-
-    }//GEN-LAST:event_profileComboItemStateChanged
     private void maleRadioButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_maleRadioButtonActionPerformed
         //TODO add your handling code here:
     }//GEN-LAST:event_maleRadioButtonActionPerformed
@@ -410,7 +396,6 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JRadioButton maleRadioButton;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
-    private javax.swing.JComboBox<String> profileCombo;
     private javax.swing.JButton saveButton;
     private javax.swing.JLabel sexLabel;
     private javax.swing.JLabel weightLabel;

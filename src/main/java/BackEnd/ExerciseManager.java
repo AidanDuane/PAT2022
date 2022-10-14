@@ -19,7 +19,7 @@ public class ExerciseManager {
 // finds the users MET value
 
     public static double getMETVal(String exNameIN) throws FileNotFoundException {
-        File f = new File("Data\\Exercise.txt");
+        File f = new File("Data\\Exercises.txt");
         Scanner fileScanner = new Scanner(f);
 
         double output = 0;
@@ -46,7 +46,7 @@ public class ExerciseManager {
         ArrayList<String> usernameArrayList = new ArrayList<String>();
 
         try {
-            File f = new File("Data\\Exercise.txt");
+            File f = new File("Data\\Exercises.txt");
             Scanner fileScanner = new Scanner(f);
             String excersises[] = new String[countExercise()];
             int count = 0;
@@ -74,7 +74,7 @@ public class ExerciseManager {
     private static int countExercise() {
         int count = 0;
         try {
-            File f = new File("Data\\Exercise.txt");
+            File f = new File("Data\\Exercises.txt");
             Scanner fileScanner = new Scanner(f);
 
             while (fileScanner.hasNextLine()) {
@@ -97,10 +97,12 @@ public class ExerciseManager {
     }
 
     //calucates the caloric loss for a day
-    public static double calcCalLoss(String exercise, int duration, double weight) throws FileNotFoundException {
+    public static double calcCalLoss(String exercise, double duration) throws FileNotFoundException {
 
         double metVal = getMETVal(exercise);
-        return metVal;
+        int bodyweight = UserManager.WEIGHT;
+        int calorieburn = (int) ((duration * metVal * bodyweight) / 200);
+        return calorieburn;
     }
 
 }

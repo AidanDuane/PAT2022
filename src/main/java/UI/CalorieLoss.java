@@ -6,6 +6,7 @@ package UI;
 
 import BackEnd.ExerciseManager;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -21,6 +22,7 @@ public class CalorieLoss extends javax.swing.JFrame {
      * Creates new form CalorieGain
      */
     DefaultComboBoxModel model = new DefaultComboBoxModel();
+
     String[] exercises;
 
     public CalorieLoss() {
@@ -85,6 +87,11 @@ public class CalorieLoss extends javax.swing.JFrame {
         });
 
         exerciseComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        exerciseComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exerciseComboBoxActionPerformed(evt);
+            }
+        });
 
         jLabel7.setFont(new java.awt.Font("Stencil", 0, 14)); // NOI18N
         jLabel7.setText("LOST");
@@ -98,7 +105,7 @@ public class CalorieLoss extends javax.swing.JFrame {
 
         jLabel6.setText("minutes");
 
-        durationSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.1d));
+        durationSpinner.setModel(new javax.swing.SpinnerNumberModel(0.0d, null, null, 0.5d));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -121,8 +128,11 @@ public class CalorieLoss extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(exerciseComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(caloriesLostLabel)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(durationSpinner)
+                                    .addComponent(caloriesLostLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(108, 108, 108)
@@ -131,13 +141,9 @@ public class CalorieLoss extends javax.swing.JFrame {
                                         .addComponent(jLabel4))
                                     .addGroup(layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(undoButton))))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(exerciseComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(durationSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabel6))))
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(undoButton)))))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(backButton)))
@@ -180,7 +186,11 @@ public class CalorieLoss extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
-        new Dashboard().setVisible(true);
+        try {
+            new Dashboard().setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(CalorieLoss.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
@@ -188,7 +198,17 @@ public class CalorieLoss extends javax.swing.JFrame {
         String exercise = (String) exerciseComboBox.getSelectedItem();
         double duration = (double) durationSpinner.getValue();
 
+        try {
+            caloriesLostLabel.setText(String.valueOf(ExerciseManager.calcCalLoss(exercise, duration)));
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CalorieLoss.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_enterButtonActionPerformed
+
+    private void exerciseComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exerciseComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_exerciseComboBoxActionPerformed
 
     /**
      * @param args the command line arguments

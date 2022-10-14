@@ -5,6 +5,16 @@
 package UI;
 
 import BackEnd.ExerciseManager;
+import BackEnd.UserManager;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 
 /**
@@ -16,18 +26,31 @@ public class Dashboard extends javax.swing.JFrame {
     /**
      * Creates new form Dashboard
      */
-    public Dashboard() {
+    public Dashboard() throws IOException {
         initComponents();
 
         datePicker.setDateToToday();
 
         String[] exercises = ExerciseManager.getUserExercises("Steve");
-        DefaultListModel model = new DefaultListModel();
+        DefaultListModel exerciseModel = new DefaultListModel();
         for (int i = 0; i < exercises.length; i++) {
-            model.addElement(exercises[i]);
+            exerciseModel.addElement(exercises[i]);
 
         }
-        userExerciseList.setModel(model);
+        userExerciseList.setModel(exerciseModel);
+
+        DefaultComboBoxModel usersModel = new DefaultComboBoxModel();
+        String[] usernames;
+        usernames = UserManager.getUsernames();
+        for (int i = 0; i < usernames.length; i++) {
+
+            usersModel.addElement(usernames[i]);
+
+        }
+        userComboBox.setModel(usersModel);
+
+        UserManager.setCurrentUser(usernames[0]);
+
     }
 
     /**
@@ -61,6 +84,7 @@ public class Dashboard extends javax.swing.JFrame {
         userExerciseList = new javax.swing.JList<>();
         jScrollPane5 = new javax.swing.JScrollPane();
         userMealList = new javax.swing.JList<>();
+        userComboBox = new javax.swing.JComboBox<>();
 
         jScrollPane3.setViewportView(jTextPane3);
 
@@ -159,6 +183,8 @@ public class Dashboard extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        userExerciseList.setEnabled(false);
+        userExerciseList.setFocusable(false);
         jScrollPane4.setViewportView(userExerciseList);
 
         userMealList.setModel(new javax.swing.AbstractListModel<String>() {
@@ -166,19 +192,22 @@ public class Dashboard extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        userMealList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        userMealList.setEnabled(false);
+        userMealList.setFocusable(false);
         jScrollPane5.setViewportView(userMealList);
+
+        userComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        userComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userComboBoxActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(historyButton)
-                .addGap(18, 18, 18)
-                .addComponent(profileButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -190,28 +219,44 @@ public class Dashboard extends javax.swing.JFrame {
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(66, 66, 66)
-                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(93, 93, 93))
-                            .addGroup(layout.createSequentialGroup()
                                 .addGap(52, 52, 52)
                                 .addComponent(addExButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                                 .addComponent(addMealButton, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(3, 3, 3)))))
+                                .addGap(3, 3, 3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(66, 66, 66)
+                                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(94, 94, 94)))))
                 .addContainerGap(16, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(historyButton)
+                        .addGap(18, 18, 18)
+                        .addComponent(profileButton)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(userComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(121, 121, 121))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(profileButton)
-                    .addComponent(historyButton))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(profileButton)
+                            .addComponent(historyButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(userComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -229,7 +274,7 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(59, 59, 59)
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(69, 91, Short.MAX_VALUE))
+                .addGap(69, 103, Short.MAX_VALUE))
         );
 
         pack();
@@ -249,8 +294,9 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
         // TODO add your handling code here:
+        String username = userComboBox.getSelectedItem().toString();
         this.setVisible(false);
-        new Profile().setVisible(true);
+        new Profile(true, username).setVisible(true);
     }//GEN-LAST:event_profileButtonActionPerformed
 
     private void addMealButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMealButtonActionPerformed
@@ -258,6 +304,52 @@ public class Dashboard extends javax.swing.JFrame {
         this.setVisible(false);
         new CalorieGain().setVisible(true);
     }//GEN-LAST:event_addMealButtonActionPerformed
+
+    private void userComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userComboBoxActionPerformed
+        String currentUser = "";
+        LocalDate unformattedDate = datePicker.getDate();
+        String dateSelected = unformattedDate.format(DateTimeFormatter.ofPattern("dd-mm-yyyy"));
+        try {
+
+            try {
+                //A BIG METHOD
+                File f = new File("Data\\CurrentUser.txt");
+                Scanner fileScanner = new Scanner(f);
+
+                while (fileScanner.hasNextLine()) {
+                    String line = fileScanner.nextLine();
+                    Scanner lineSc = new Scanner(line).useDelimiter("#");
+
+                    //dependent on file columns
+                    currentUser = lineSc.next();
+                }
+
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            File f = new File("Data\\ExerciseLog.txt");
+            Scanner fileScanner = new Scanner(f);
+
+            while (fileScanner.hasNextLine()) {
+                String line = fileScanner.nextLine();
+                Scanner lineSc = new Scanner(line).useDelimiter("#");
+
+                //dependent on file columns
+                String username = lineSc.next();
+                String exercise = lineSc.next();
+                String logDate = lineSc.next();
+
+                //do stuff with line data
+                if (username.equals(currentUser) && logDate.equals(dateSelected)) {
+                    System.out.println("BIG SEX");
+                }
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }//GEN-LAST:event_userComboBoxActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,7 +381,11 @@ public class Dashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Dashboard().setVisible(true);
+                try {
+                    new Dashboard().setVisible(true);
+                } catch (IOException ex) {
+                    Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
@@ -315,6 +411,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JTextPane lostLabel;
     private javax.swing.JTextField netLabel;
     private javax.swing.JButton profileButton;
+    private javax.swing.JComboBox<String> userComboBox;
     private javax.swing.JList<String> userExerciseList;
     private javax.swing.JList<String> userMealList;
     // End of variables declaration//GEN-END:variables

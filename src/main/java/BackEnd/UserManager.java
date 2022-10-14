@@ -10,6 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -21,13 +22,22 @@ import java.util.logging.Logger;
  */
 public class UserManager {
 
+    public static final int WEIGHT = 0;
+    public static final int HEIGHT = 1;
+    public static final int SEX = 2;
+    public static final int GOAL = 3;
+    public static final int AGE = 4;
+
+    public static String userProfilesPath = "Data\\UsersProfiles.txt";
+    public static String currentUserPath = "Data\\CurrentUser.txt";
+
     //gets all the usersnames from the Users text file
     public static String[] getUsernames() {
         Scanner sc;
         ArrayList<String> usernameArrayList = new ArrayList<String>();
 
         try {
-            File f = new File("Data\\Users.txt");
+            File f = new File(userProfilesPath);
             Scanner fileScanner = new Scanner(f);
             String usernames[] = new String[countUsers()];
             int count = 0;
@@ -55,7 +65,7 @@ public class UserManager {
     public static int countUsers() {
         int count = 0;
         try {
-            File f = new File("Data\\Users.txt");
+            File f = new File(userProfilesPath);
             Scanner fileScanner = new Scanner(f);
 
             while (fileScanner.hasNextLine()) {
@@ -76,7 +86,7 @@ public class UserManager {
         String[] info = new String[5];
 
         try {
-            File f = new File("Data\\Users.txt");
+            File f = new File(userProfilesPath);
             Scanner fileScanner = new Scanner(f);
 
             while (fileScanner.hasNextLine()) {
@@ -115,6 +125,27 @@ public class UserManager {
         write.flush();
 
         write.close();
+    }
+
+    public static String getCurrentUser() {
+        String name = "";
+        try {
+            File f = new File(currentUserPath);
+            Scanner fileScanner = new Scanner(f);
+
+            name = fileScanner.next();
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(ExerciseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return name;
+    }
+
+    public static void setCurrentUser(String user) throws IOException {
+        FileWriter fw = new FileWriter(currentUserPath);
+
+        PrintWriter pw = new PrintWriter(fw);
+        pw.print(user);
+        pw.close();
     }
 
 }
