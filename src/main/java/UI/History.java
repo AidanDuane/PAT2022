@@ -4,8 +4,8 @@
  */
 package UI;
 
-import static UI.TestTable.getColNames;
-import static UI.TestTable.getData;
+//import static UI.TestTable.getColNames;
+//import static UI.TestTable.getData;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;

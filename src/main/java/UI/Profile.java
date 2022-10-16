@@ -51,8 +51,6 @@ public class Profile extends javax.swing.JFrame {
 
         //populates all the information fields and spinners appropriately according to the selected user
         String[] result = UserManager.getInfo(username);
-        String value = (result[4]);
-        System.out.println(value);
         ageSpinner.setValue(Integer.parseInt(result[UserManager.AGE]));
         weightSpinner.setValue(Double.parseDouble(result[UserManager.WEIGHT]));
         heightSpinner.setValue(Double.parseDouble(result[UserManager.HEIGHT]));
@@ -84,7 +82,6 @@ public class Profile extends javax.swing.JFrame {
         weightLabel = new javax.swing.JLabel();
         nameLabel = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        saveButton = new javax.swing.JButton();
         jLabel9 = new javax.swing.JLabel();
         backButton = new javax.swing.JButton();
         maleRadioButton = new javax.swing.JRadioButton();
@@ -120,13 +117,6 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
-        saveButton.setText("SAVE");
-        saveButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveButtonActionPerformed(evt);
-            }
-        });
-
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -151,7 +141,7 @@ public class Profile extends javax.swing.JFrame {
 
         jLabel12.setText("cm");
 
-        addProfileButton.setText("+");
+        addProfileButton.setText("Create New Profile");
         addProfileButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addProfileButtonActionPerformed(evt);
@@ -186,10 +176,7 @@ public class Profile extends javax.swing.JFrame {
                             .addComponent(goalLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(saveButton)
-                                .addGap(18, 18, 18)
-                                .addComponent(addProfileButton))
+                            .addComponent(addProfileButton)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                     .addComponent(goalSpinner, javax.swing.GroupLayout.Alignment.LEADING)
@@ -273,11 +260,9 @@ public class Profile extends javax.swing.JFrame {
                             .addComponent(goalLabel)
                             .addComponent(goalSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(nameLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(saveButton)
-                    .addComponent(addProfileButton))
-                .addGap(68, 68, 68))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addProfileButton)
+                .addGap(74, 74, 74))
             .addGroup(layout.createSequentialGroup()
                 .addGap(259, 259, 259)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -288,11 +273,6 @@ public class Profile extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_saveButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
@@ -396,7 +376,6 @@ public class Profile extends javax.swing.JFrame {
     private javax.swing.JRadioButton maleRadioButton;
     private javax.swing.JTextField nameField;
     private javax.swing.JLabel nameLabel;
-    private javax.swing.JButton saveButton;
     private javax.swing.JLabel sexLabel;
     private javax.swing.JLabel weightLabel;
     private javax.swing.JSpinner weightSpinner;

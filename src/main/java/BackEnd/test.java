@@ -4,20 +4,22 @@
  */
 package BackEnd;
 
+import static BackEnd.ExerciseManager.getMETVal;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author aidand
+ * @author Aidan Duane
  */
 public class test {
-
     public static void main(String[] args) throws FileNotFoundException {
-        String exercise = "running";
-        double duration = 2;
-        System.out.println(ExerciseManager.calcCalLoss(exercise, duration));
+        String currentUser = UserManager.getCurrentUser();
+        String[] info = UserManager.getInfo(currentUser);
+        
+        double metVal = getMETVal("jogging");
+        int bodyweight = Integer. parseInt(info[UserManager.WEIGHT]);
+        int calorieburn = (int) ((50 * 3 * 3) / 200);
+        System.out.println(calorieburn); 
     }
+    
 }

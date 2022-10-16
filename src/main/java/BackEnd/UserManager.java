@@ -21,7 +21,6 @@ import java.util.logging.Logger;
  * @author aidand
  */
 public class UserManager {
-
     public static final int WEIGHT = 0;
     public static final int HEIGHT = 1;
     public static final int SEX = 2;
@@ -147,5 +146,6 @@ public class UserManager {
         pw.print(user);
         pw.close();
     }
+    
 
 }
