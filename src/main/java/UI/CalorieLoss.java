@@ -183,6 +183,7 @@ public class CalorieLoss extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //opens the Dashboard UI screen
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -193,6 +194,8 @@ public class CalorieLoss extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_backButtonActionPerformed
 
+    //takes the users selected exercise and inputted duration 
+    //and saves them into appropriately named variables
     private void enterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterButtonActionPerformed
         // TODO add your handling code here
         String exercise = (String) exerciseComboBox.getSelectedItem();

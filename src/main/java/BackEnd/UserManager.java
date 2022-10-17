@@ -30,7 +30,7 @@ public class UserManager {
     public static String userProfilesPath = "Data\\UsersProfiles.txt";
     public static String currentUserPath = "Data\\CurrentUser.txt";
 
-    //gets all the usersnames from the Users text file
+    //returns an array of every username from the Users text file
     public static String[] getUsernames() {
         Scanner sc;
         ArrayList<String> usernameArrayList = new ArrayList<String>();
@@ -60,7 +60,7 @@ public class UserManager {
         return usernameStringArray;
     }
 
-    //gets the number of existing users
+    //returns the total number of existing users
     public static int countUsers() {
         int count = 0;
         try {
@@ -79,7 +79,7 @@ public class UserManager {
         return count;
     }
 
-//gets all the info about each user
+//returns all the info about a specific user
     public static String[] getInfo(String selectedUsername) {
 
         String[] info = new String[5];
@@ -114,7 +114,8 @@ public class UserManager {
         return info;
     }
 
-    //creates a new user in the Users txt file
+    //creates a new user in the Users txt file, with 
+    //all the appropriate information(sex,weight,height,etc...)
     public static void newUser(String name, double weight, double height, String sex, int goal, int age) throws IOException {
         String newUser = (name + "#" + weight + "#" + height + "#" + sex + "#" + goal + "#" + age);
         FileWriter write = new FileWriter(new File("Data\\Users.txt"), true);
@@ -126,6 +127,7 @@ public class UserManager {
         write.close();
     }
 
+    //returns the current user that is logged in
     public static String getCurrentUser() {
         String name = "";
         try {
@@ -139,6 +141,7 @@ public class UserManager {
         return name;
     }
 
+    //sets a user to the current user(logs the user in)
     public static void setCurrentUser(String user) throws IOException {
         FileWriter fw = new FileWriter(currentUserPath);
 

@@ -38,6 +38,7 @@ public class History extends javax.swing.JFrame {
 
     public static String[][] getData() {
         //row - col
+        //Examples of how the History table would be populated
         String data[][] = new String[4][4];
         data[0][0] = "02/05/2022";
         data[0][1] = "2600";
@@ -136,6 +137,7 @@ public class History extends javax.swing.JFrame {
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
+        //Opens the Dashboard UI screen
         this.setVisible(false);
         try {
             new Dashboard().setVisible(true);

@@ -28,11 +28,16 @@ public class Dashboard extends javax.swing.JFrame {
      */
     public Dashboard() throws IOException {
         initComponents();
-
+        
+        //Sets the date picker to the users local time/date
+        //creates a LocalDate variable that contains the chosen date
+        //turns the LocalDate variable into a string
         datePicker.setDateToToday();
         LocalDate unformattedDate = datePicker.getDate();
         String dateSelected = unformattedDate.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")); 
 
+        //creates a array that contains a full list of the user's completed exercises
+        //populates the Dashboard exercise list with these exercises
         String[] exercises = ExerciseManager.getUserExercises(UserManager.getCurrentUser(), dateSelected);
         DefaultListModel exerciseModel = new DefaultListModel();
         for (int i = 0; i < exercises.length; i++) {
@@ -41,6 +46,8 @@ public class Dashboard extends javax.swing.JFrame {
         }
         userExerciseList.setModel(exerciseModel);
 
+        //creates a combobox model
+        //populates this combobox with a full list of available users
         DefaultComboBoxModel usersModel = new DefaultComboBoxModel();
         String[] usernames;
         usernames = UserManager.getUsernames();
@@ -297,18 +304,21 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void addExButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExButtonActionPerformed
         // TODO add your handling code here:
+        //Opens the Calorie Loss UI screen
         this.setVisible(false);
         new CalorieLoss().setVisible(true);
     }//GEN-LAST:event_addExButtonActionPerformed
 
     private void historyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyButtonActionPerformed
         // TODO add your handling code here:
+        //Opens the History UI screen
         this.setVisible(false);
         new History().setVisible(true);
     }//GEN-LAST:event_historyButtonActionPerformed
 
     private void profileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_profileButtonActionPerformed
         // TODO add your handling code here:
+        //Opens the Profile UI screen
         String username = userComboBox.getSelectedItem().toString();
         this.setVisible(false);
         new Profile(true, username).setVisible(true);
@@ -316,6 +326,7 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void addMealButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addMealButtonActionPerformed
         // TODO add your handling code here:
+        //Opens the Calorie Gain UI screen
         this.setVisible(false);
         new CalorieGain().setVisible(true);
     }//GEN-LAST:event_addMealButtonActionPerformed
@@ -327,9 +338,11 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_userComboBoxActionPerformed
 
     private void LogInButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LogInButtonActionPerformed
+        //calls the getCurrentUser method and assigns it to a variable
         String currentUser = UserManager.getCurrentUser();
         try {
             // TODO add your handling code here:
+            //Populates all comboboxes, lists, etc... according to the logged in user and their information/logs
             UserManager.setCurrentUser((String) userComboBox.getSelectedItem());
         } catch (IOException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);

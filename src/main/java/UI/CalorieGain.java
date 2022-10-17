@@ -140,6 +140,8 @@ public class CalorieGain extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    //opens the Dashboard UI screen
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         // TODO add your handling code here:
         this.setVisible(false);
@@ -150,6 +152,7 @@ public class CalorieGain extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_backButtonActionPerformed
 
+    //The selcted meal is saved into a variable "chosenExercise"
     private void mealComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mealComboBoxActionPerformed
         // TODO add your handling code here:
         String chosenExercise = (String) mealComboBox.getSelectedItem();

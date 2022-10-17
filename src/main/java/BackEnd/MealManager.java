@@ -17,6 +17,9 @@ import java.util.logging.Logger;
  */
 public class MealManager {
 
+    //scans through the whole list of available meals,
+    //finds the specific meal the user has selected
+    //and returns the caloric value of that meal
     public static int getCals(String selectedMeal) throws FileNotFoundException {
 
         int calories = 0;

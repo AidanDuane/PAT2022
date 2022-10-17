@@ -43,7 +43,8 @@ public class ExerciseManager {
         return output;
     }
 
-    //fetches all the different excersise names from the exsercise txt file
+    //fetches all the different excersise 
+    //names from the exercise list text file
     public static String[] getExercises() {
         Scanner sc;
         ArrayList<String> usernameArrayList = new ArrayList<String>();
@@ -73,7 +74,7 @@ public class ExerciseManager {
         return usernameStringArray;
     }
 
-    //counts the number of exercises in the txt file
+    //counts the number of exercises in the exercise lit text file
     private static int countExercise() {
         int count = 0;
         try {
@@ -92,7 +93,7 @@ public class ExerciseManager {
         return count;
     }
 
-    //gets the exercises that the user has completed today
+    //gets the exercises that the user has completed on a certain day
     public static String[] getUserExercises(String user, String date) {
         Scanner sc;
         ArrayList<String> userExerciseList = new ArrayList<String>();
@@ -127,7 +128,7 @@ public class ExerciseManager {
 
     }
 
-    //calucates the caloric loss for a day
+    //calucates the total caloric loss for a certain day
     public static double calcCalLoss(String exercise, double duration) throws FileNotFoundException {
         String currentUser = UserManager.getCurrentUser();
         String[] info = UserManager.getInfo(currentUser);
@@ -137,7 +138,9 @@ public class ExerciseManager {
         int calorieburn = (int) ((duration * metVal * bodyweight) / 200);
         return calorieburn;
     }
-    
+        
+    //counts the total amount of user logs in the 
+    //exercise log text file
         public static int countLogs() {
         int count = 0;
         try {

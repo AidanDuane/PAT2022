@@ -19,6 +19,9 @@ import java.util.logging.Logger;
  */
 public class ExerciseLogManager {
 
+        //scans the exercise log to find a specific user, 
+        //and a specific date, and gets the total amount
+        //of calories that the user burnt on that day.
     public static String getCals(String userToFind, LocalDate dateToFind) {
         String output = "";
         try {
@@ -44,6 +47,9 @@ public class ExerciseLogManager {
         return output;
     }
 
+    //scans the list of available exercises, and
+    //finds the specific exercise the user has 
+    //chosen, and gets the MET value for that exercise
     public static double getMETval(String selectedExercise) {
         double METval = 0;
         try {
@@ -67,7 +73,9 @@ public class ExerciseLogManager {
 
         return METval;
     }
-
+    //would use the specific exercise's MET value,
+    //the time the user did the exercise for to
+    //calculate the amount of calories the user burned
     public static int calculateCals(int METval, int timeInMins) {
 
         return 0;
